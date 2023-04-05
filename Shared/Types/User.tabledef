@@ -1,0 +1,10 @@
+[Metadata]
+Table Name = user
+Namespace = Purpah.Shared.Types
+Primary Keys = 1
+
+[Columns]
+id = uuid
+name = string
+hash = long
+storedsession = string
