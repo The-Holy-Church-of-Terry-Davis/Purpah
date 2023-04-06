@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Purpah.Backend.Controllers;
 
-public class UserController
+public class UserController : ControllerBase
 {
     [Route("/api/users/getuserbyid")]
     [HttpGet]
@@ -11,18 +11,31 @@ public class UserController
 
     [Route("/api/users/changeuser")]
     [HttpPost]
-    public static User? GetUserById(Guid id, UserChangeInfo inf) 
+    public User? GetUserById(Guid id, UserChangeInfo inf, Guid sessionid)
     {  
-        User tryfind = GetUserById(id);
-        if(tryfind != null)
+        if(SessionVars.ContainsSession(id))
         {
-            User newusr = new User(tryfind.uuid, inf.username, tryfind.servers, tryfind.friends);
-            /*
-                Do some database magic!
-            */
-            return newusr;
+            User tryfind = GetUserById(id);
+            if(tryfind != null)
+            {
+                User newusr = new User(tryfind.uuid, inf.username, tryfind.servers, tryfind.friends);
+                /*
+                    Do some database magic!
+                */
+                return newusr;
+            }
         }
 
-        return tryfind;
+        return null;
+    }
+
+    [Route("/api/users/exists")]
+    [HttpGet]
+    public static bool UserExists(Guid uuid)
+    {
+        /*
+            Do some database magic!
+        */
+        return true;
     }
 }
